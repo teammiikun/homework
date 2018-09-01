@@ -1,2 +1,5 @@
 /Project/Library
 /Project/.vscode
+/Project/Temp
+/Project/obj/Debug/*.cache
+/Project/Assembly-CSharp.csproj
