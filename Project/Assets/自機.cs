@@ -23,8 +23,19 @@ public class 自機 : MonoBehaviour
 	/// 上を向いたり、下を向いたりするスピード
 	/// </summary>
 	public float rotateSpeedY;
-
+	/// <summary>
+	/// 現在のスピード
+	/// </summary>
 	private float currentSpeed{ set; get; }
+
+	/// <summary>
+	/// 今y方向にどれだけ回転してるか
+	/// </summary>
+	private float currentRotUp{ set; get; }
+	/// <summary>
+	/// 今右とか左にどれだけ回転してるか
+	/// </summary>
+	private float currentRotX{ set; get; }
 
 	void Update()
 	{
@@ -40,11 +51,11 @@ public class 自機 : MonoBehaviour
 
 		transform.localPosition += transform.forward * currentSpeed * Time.deltaTime;
 
-		// 方向転換
-		transform.Rotate( 
-			-Input.GetAxisRaw("Vertical") * Time.deltaTime * rotateSpeedY,
-			Input.GetAxisRaw("Horizontal") * Time.deltaTime * rotateSpeedX,
-			 0 );
+		// 回転
+		currentRotUp += Input.GetAxisRaw("Horizontal") * Time.deltaTime * rotateSpeedX;
+		currentRotX  -= Input.GetAxisRaw("Vertical") * Time.deltaTime * rotateSpeedY;
+
+		transform.rotation = Quaternion.Euler( currentRotX, currentRotUp, 0 );
 	}
 
 }
