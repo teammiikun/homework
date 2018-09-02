@@ -4,3 +4,4 @@
 /Project/obj/Debug/*.cache
 /Project/Assembly-CSharp.csproj
 /ROM
+/.vscode/launch.json

@@ -9,6 +9,10 @@ public class 敵 : MonoBehaviour
 	/// </summary>
 	public MoveControler controler;
 	/// <summary>
+	/// アセットの参照。
+	/// </summary>
+	public GameObject	 RingPrefab;
+	/// <summary>
 	/// 待ち時間最小 (インスペクタから設定する)
 	/// </summary>
 	public float waitTimeMin;
@@ -45,6 +49,10 @@ public class 敵 : MonoBehaviour
 	/// </summary>
 	public float addRotUpMax;
 	/// <summary>
+	/// Ringを作るスパン
+	/// </summary>
+	public float createRingSpan;
+	/// <summary>
 	/// 状態ごとでUpdateの内容を変えるためのもの
 	/// </summary>
 	private System.Action _action;
@@ -52,6 +60,11 @@ public class 敵 : MonoBehaviour
 	/// 何秒移動する、とか何秒待つ、とかの汎用的な時間処理用のタイマー
 	/// </summary>
 	private float _timer;
+
+	/// <summary>
+	/// このタイマーがゼロになるとRingを作る
+	/// </summary>
+	private float _createRingTimer;
 
 	void Awake()
 	{
@@ -136,6 +149,29 @@ public class 敵 : MonoBehaviour
 		// 移動の開始に戻る
 		_action = Act_Move_Init;
 	}
+
+	/// <summary>
+	/// 毎フレームカウントして、
+	/// タイマーが0になったらRingを生成する
+	/// </summary>
+	void Update_Ring()
+	{
+		if ( _action == Act_Wait )
+		{
+			//待機中はタイマーを更新しない
+			return;
+		}
+
+		_createRingTimer -= Time.deltaTime;
+
+		if ( _createRingTimer <= 0 )
+		{
+			var ring = Instantiate(RingPrefab);
+			ring.transform.position = transform.position;
+			ring.transform.rotation = transform.rotation;
+			_createRingTimer = createRingSpan;
+		}
+	}
 	void Update () 
 	{
 		// 毎フレーム状態を実行する
@@ -143,5 +179,8 @@ public class 敵 : MonoBehaviour
 		{
 			_action();
 		}
+
+		// リング生成のカウント
+		Update_Ring();
 	}
 }
