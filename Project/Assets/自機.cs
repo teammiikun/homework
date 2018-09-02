@@ -21,4 +21,12 @@ public class 自機 : MonoBehaviour
 		controler.Horizontal = Input.GetAxisRaw("Horizontal");
 		controler.Vertical = Input.GetAxisRaw("Vertical");
 	}
+
+	// void OnGUI()
+	// {
+	// 	if ( controler == null ){ return; }
+	// 	GUILayout.Label("H: " + controler.currentRotUp );
+	// 	GUILayout.Label("V : " + controler.currentRotX );
+	// }
+
 }

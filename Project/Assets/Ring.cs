@@ -125,6 +125,7 @@ public class Ring : MonoBehaviour
 		length = Mathf.Sin( _timer / lifeTime * Mathf.PI / 2.0f ) * initLength;
 		if ( _timer == 0 )
 		{
+			sequence.gameOver = true;
 			_action = Act_GameOver;
 		}
 	}

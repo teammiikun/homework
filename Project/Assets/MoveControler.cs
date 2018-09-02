@@ -35,11 +35,11 @@ public class MoveControler : MonoBehaviour
 	/// <summary>
 	/// 今y方向にどれだけ回転してるか
 	/// </summary>
-	private float currentRotUp{ set; get; }
+	public float currentRotUp{ private set; get; }
 	/// <summary>
 	/// 今右とか左にどれだけ回転してるか
 	/// </summary>
-	private float currentRotX{ set; get; }
+	public float currentRotX{ private set; get; }
 
 	/// <summary>
 	/// アクセル
