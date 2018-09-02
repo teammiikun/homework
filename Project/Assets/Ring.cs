@@ -30,6 +30,14 @@ public class Ring : MonoBehaviour
 	/// </summary>
 	public float moveSpeed;
 	/// <summary>
+	/// 破壊時に子供たちに与える初速
+	/// </summary>
+	public float destoryForce;
+	/// <summary>
+	/// そのリングを破壊するまでの制限時間
+	/// </summary>
+	public float lifeTime; 
+	/// <summary>
 	/// オブジェクトを入れる入れつ
 	/// </summary>
 	private Transform[] childTransformArray{ set; get; }
@@ -53,6 +61,20 @@ public class Ring : MonoBehaviour
 	/// </summary>
 	private System.Action _action;
 
+	/// <summary>
+	/// 当たり判定にプレイヤーを用意
+	/// </summary>
+	private GameObject	_player{ set; get; }
+
+	/// <summary>
+	/// 辺り判定に使う前回の座標
+	/// </summary>
+	private Vector3		_oldPlayerPosition{ set; get; }
+
+	private bool		_isDead{ set; get; }
+
+
+
 	void Awake()
 	{
 		childTransformArray = new Transform[size];
@@ -66,19 +88,11 @@ public class Ring : MonoBehaviour
 
 		UpdateRing();
 
+		_player = GameObject.FindGameObjectWithTag("Player");
+
 		_action = Act_Open_Init;
 	}
 
-	void Update()
-	{
-		if ( _action != null )
-		{
-			_action();
-		}
-
-		// リング毎フレーム処理
-		UpdateRing();
-	}
 
 	void Act_Open_Init()
 	{
@@ -98,13 +112,38 @@ public class Ring : MonoBehaviour
 
 		if ( _timer == 0)
 		{
+			_timer = lifeTime;
 			_action = Act_Idle;
 		}
 	}
 
 	void Act_Idle()
 	{
+		_timer = Mathf.Max( _timer - Time.deltaTime, 0 );
+		length = Mathf.Sin( _timer / lifeTime * Mathf.PI / 2.0f ) * initLength;
+		if ( _timer == 0 )
+		{
+			_action = Act_GameOver;
+		}
+	}
 
+	void Act_GameOver()
+	{
+
+	}
+
+	void Update()
+	{
+		if ( _action != null )
+		{
+			_action();
+		}
+
+		// リング毎フレーム処理
+		UpdateRing();
+
+		// 辺り判定用
+		Update_CalcCollision();
 	}
 
 	/// <summary>
@@ -112,6 +151,7 @@ public class Ring : MonoBehaviour
 	/// </summary>
 	void UpdateRing()
 	{
+		if ( _isDead ){ return ; }
 		// 回転をアニメーションさせる
 		currentOffset += moveSpeed * Time.deltaTime;
 		for( int i = 0; i < childTransformArray.Length; i++ )
@@ -121,5 +161,32 @@ public class Ring : MonoBehaviour
 			var pos = new Vector3( Mathf.Cos(rad), Mathf.Sin(rad), 0.0f ) * length;
 			childTransformArray[i].transform.localPosition = pos;
 		}
+	}
+
+	/// <summary>
+	/// 超適当な当たり判定
+	/// </summary>
+	void Update_CalcCollision()
+	{
+		var dirNow = transform.position - _player.transform.position;
+		var vec1   = Vector3.Dot(dirNow, transform.forward);
+		var vec2   = Vector3.Dot(_oldPlayerPosition, transform.forward);
+
+		if ( vec1 <= 0 && vec2 >= 0 && dirNow.magnitude < (length + 0.5f) )
+		{
+			// 法線方向の逆から、法線方向の内側に入ってきていて
+			// まぁ大体の球体の中側になってればOK
+			Destroy( gameObject, 2.0f );
+
+			foreach(var trans in childTransformArray )
+			{
+				_isDead = true;
+				var rigidBody = trans.gameObject.AddComponent<Rigidbody>();
+				rigidBody.AddForce( ( trans.position - transform.position ).normalized * destoryForce, ForceMode.VelocityChange );
+				Destroy( trans.gameObject, 2.0f );
+			}
+		}
+
+		_oldPlayerPosition = dirNow;
 	}
 }

@@ -69,6 +69,7 @@ public class 敵 : MonoBehaviour
 	void Awake()
 	{
 		_action = Act_Move_Init; 
+		_createRingTimer = createRingSpan;
 	}
 
 	/// <summary>

@@ -57,3 +57,5 @@ MonoBehaviour:
   initLength: 30
   timeOpen: 0.5
   moveSpeed: 2
+  destoryForce: 200
+  lifeTime: 12
