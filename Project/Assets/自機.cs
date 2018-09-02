@@ -9,6 +9,7 @@ public class 自機 : MonoBehaviour
 	void Update () 
 	{
 		controler.Accell = Input.GetButton("Fire1");
+		controler.Brake = Input.GetButton("Fire2");
 		controler.Horizontal = Input.GetAxisRaw("Horizontal");
 		controler.Vertical = Input.GetAxisRaw("Vertical");
 	}
