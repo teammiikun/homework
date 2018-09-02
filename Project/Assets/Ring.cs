@@ -73,10 +73,12 @@ public class Ring : MonoBehaviour
 
 	private bool		_isDead{ set; get; }
 
-
+	public Sequence		 sequence;
 
 	void Awake()
 	{
+		sequence = GameObject.FindGameObjectWithTag("Sequence").GetComponent<Sequence>();
+		sequence.AddNum();
 		childTransformArray = new Transform[size];
 
 		for ( int i = 0; i < childTransformArray.Length; i++ )
@@ -185,6 +187,7 @@ public class Ring : MonoBehaviour
 				rigidBody.AddForce( ( trans.position - transform.position ).normalized * destoryForce, ForceMode.VelocityChange );
 				Destroy( trans.gameObject, 2.0f );
 			}
+			sequence.DecNum();
 		}
 
 		_oldPlayerPosition = dirNow;

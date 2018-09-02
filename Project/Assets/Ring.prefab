@@ -58,4 +58,5 @@ MonoBehaviour:
   timeOpen: 0.5
   moveSpeed: 2
   destoryForce: 200
-  lifeTime: 12
+  lifeTime: 20
+  sequence: {fileID: 0}
