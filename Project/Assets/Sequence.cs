@@ -8,14 +8,32 @@ public class Sequence : MonoBehaviour
 {
 	public Text CountText;
 	public Text NumText;
+	public Text Info;
 	public bool enablePlayer{ private set; get; }
+	public float playerSpeedPerSecond{ set; get;}
 	public bool gameOver{ set; get; }
 	private int num;
+	private float timer{ set; get; }
+
 	void Awake()
 	{
 		enablePlayer = false;
 		StartCoroutine(GameLoop());
 	}
+
+	void Update()
+	{
+
+		Info.text = 
+string.Format(
+@"{0}Mm/h
+{1}:{2:00}", 
+(int)(playerSpeedPerSecond * 60.0f * 60.0f / 1000.0f),
+(int)timer,
+(int)(timer * 100.0f)%100
+ );
+	}
+
 
 	public void AddNum()
 	{
@@ -43,6 +61,7 @@ public class Sequence : MonoBehaviour
 
 		while ( true )
 		{
+			timer += Time.deltaTime;
 			if ( num <= 0 )
 			{
 				yield return StartCoroutine( Clear() );
