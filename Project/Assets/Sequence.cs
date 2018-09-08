@@ -17,7 +17,7 @@ public class Sequence : MonoBehaviour
 
 	void Awake()
 	{
-		enablePlayer = false;
+		enablePlayer = true;
 		StartCoroutine(GameLoop());
 	}
 

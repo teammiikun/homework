@@ -28,11 +28,6 @@ public class MoveControler : MonoBehaviour
 	/// </summary>
 	public float rotateSpeedY;
 	/// <summary>
-	/// アッパーベクトルを入れ替えるタイミング
-	/// </summary>
-	public float swapUpValue;
-	public float swapTime;
-	/// <summary>
 	/// 現在のスピード
 	/// </summary>
 	public float currentSpeed{ private set; get; }
@@ -55,10 +50,6 @@ public class MoveControler : MonoBehaviour
 	public float Vertical{ set; get; }
 
 	private Vector3 currentUpper = Vector3.up;
-
-	public Quaternion prevQ;
-
-	private float enableSwapTimer;
 
 	void Update()
 	{
@@ -88,26 +79,10 @@ public class MoveControler : MonoBehaviour
 			Horizontal * Time.deltaTime * rotateSpeedX,
 			 0 );
 
-		enableSwapTimer = Mathf.Max(enableSwapTimer - Time.deltaTime, 0);
 
-		var upDotUp = Vector3.Dot( currentUpper, transform.up );
-		if ( enableSwapTimer <= 0.0f && upDotUp < swapUpValue )
-		{
-			currentUpper.y *= -1.0f;
-			enableSwapTimer = swapTime;
-		}
-		
-		if ( enableSwapTimer == 0 )
-		{
-			transform.rotation = Quaternion.LookRotation( transform.rotation * Vector3.forward, currentUpper);
-			prevQ = transform.rotation;
-		}
-		else
-		{
-			transform.rotation = Quaternion.Lerp( 
-				prevQ, Quaternion.LookRotation( transform.rotation * Vector3.forward, currentUpper), 1.0f - enableSwapTimer / swapTime  );
-			prevQ = transform.rotation;
-		}
+		transform.rotation = Quaternion.Lerp( 
+			transform.rotation, Quaternion.LookRotation( transform.rotation * Vector3.forward, currentUpper), Time.deltaTime * 0.5f  );
+
 	}
 
 	/// <summary>

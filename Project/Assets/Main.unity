@@ -10181,7 +10181,7 @@ MonoBehaviour:
   decF: 8
   rotateSpeedX: 100
   rotateSpeedY: 100
-  swapUpValue: 0.15
+  swapUpValue: 0.1
   swapTime: 5
   prevQ: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &2008861320
