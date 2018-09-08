@@ -175,20 +175,31 @@ public class Ring : MonoBehaviour
 		var vec1   = Vector3.Dot(dirNow, transform.forward);
 		var vec2   = Vector3.Dot(_oldPlayerPosition, transform.forward);
 
-		if ( vec1 <= 0 && vec2 >= 0 && dirNow.magnitude < (length + 0.5f) )
+		if ( vec1 <= 0 && vec2 >= 0 )
 		{
-			// 法線方向の逆から、法線方向の内側に入ってきていて
-			// まぁ大体の球体の中側になってればOK
-			Destroy( gameObject, 2.0f );
-
-			foreach(var trans in childTransformArray )
+			if ( dirNow.magnitude < (length + 0.5f) )
 			{
-				_isDead = true;
-				var rigidBody = trans.gameObject.AddComponent<Rigidbody>();
-				rigidBody.AddForce( ( trans.position - transform.position ).normalized * destoryForce, ForceMode.VelocityChange );
-				Destroy( trans.gameObject, 2.0f );
+				// 法線方向の逆から、法線方向の内側に入ってきていて
+				// まぁ大体の球体の中側になってればOK
+				Destroy( gameObject, 2.0f );
+
+				foreach(var trans in childTransformArray )
+				{
+					_isDead = true;
+					var rigidBody = trans.gameObject.AddComponent<Rigidbody>();
+					rigidBody.AddForce( ( trans.position - transform.position ).normalized * destoryForce, ForceMode.VelocityChange );
+					Destroy( trans.gameObject, 2.0f );
+				}
+				sequence.DecNum();
+				sequence.ShowResult( true );
 			}
-			sequence.DecNum();
+			else
+			{
+				if ( dirNow.magnitude >= (length + 0.5f) && dirNow.magnitude < (length + 20.0f))
+				{
+					sequence.ShowResult(false);
+				}
+			}
 		}
 
 		_oldPlayerPosition = dirNow;

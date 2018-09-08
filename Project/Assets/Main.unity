@@ -5057,6 +5057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02b7799b8ce37794680401fd40fb7fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ResultCanvasPrefab: {fileID: 223707885622157252, guid: 5be611f3db3e7b94f978e0395bd877b0,
+    type: 2}
   CountText: {fileID: 1630316551}
   NumText: {fileID: 1906449520}
   Info: {fileID: 1855418943}

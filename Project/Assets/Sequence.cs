@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Sequence : MonoBehaviour 
 {
+	public Canvas ResultCanvasPrefab;
 	public Text CountText;
 	public Text NumText;
 	public Text Info;
@@ -111,6 +112,18 @@ string.Format(
 
 		SceneManager.LoadScene(0);
 
+	}
+
+	public void ShowResult( bool OK )
+	{
+		var canvas = Instantiate( ResultCanvasPrefab ).GetComponent<Canvas>();
+		if ( !OK )
+		{
+			canvas.GetComponentInChildren<Text>().text = "Failed!";
+			canvas.GetComponentInChildren<Text>().color = Color.blue;
+		}
+
+		Destroy( canvas.gameObject, 3.0f );
 	}
 
 
