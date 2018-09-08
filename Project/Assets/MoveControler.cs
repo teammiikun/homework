@@ -79,9 +79,12 @@ public class MoveControler : MonoBehaviour
 			Horizontal * Time.deltaTime * rotateSpeedX,
 			 0 );
 
+		// 真上ではあまり補正がかからないように
+		var checkRate = Mathf.Abs( Vector3.Dot( transform.up, Vector3.up ) ); 
 
+		// 水平に補正
 		transform.rotation = Quaternion.Lerp( 
-			transform.rotation, Quaternion.LookRotation( transform.rotation * Vector3.forward, currentUpper), Time.deltaTime * 0.5f  );
+			transform.rotation, Quaternion.LookRotation( transform.rotation * Vector3.forward, currentUpper), Time.deltaTime * 0.8f * checkRate );
 
 	}
 

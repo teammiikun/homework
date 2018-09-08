@@ -9,6 +9,7 @@ public class Sequence : MonoBehaviour
 	public Text CountText;
 	public Text NumText;
 	public Text Info;
+	public Text Info2;
 	public bool enablePlayer{ private set; get; }
 	public float playerSpeedPerSecond{ set; get;}
 	public bool gameOver{ set; get; }
@@ -17,7 +18,9 @@ public class Sequence : MonoBehaviour
 
 	void Awake()
 	{
-		enablePlayer = true;
+		enablePlayer = false;
+		Info2.enabled = false;
+
 		StartCoroutine(GameLoop());
 	}
 
@@ -83,7 +86,14 @@ string.Format(
 		CountText.text = "CLEAR";
 		CountText.enabled = true;
 
-		yield return new WaitForSeconds(10.0f);
+		yield return new WaitForSeconds(1.0f);
+
+		Info2.enabled = true;
+
+		while( !Input.GetButtonDown("Fire1"))
+		{
+			yield return null;
+		}
 
 		SceneManager.LoadScene(0);
 
